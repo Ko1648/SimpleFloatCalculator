@@ -17,16 +17,16 @@ class Parser {
      * @return the tree
      */
     public static ExpressionTree parse(String str){
-
-        if(!Pattern.matches("(\\d+(?:\\.\\d+)?)(?:(\\+|\\-|\\*|\\/)(\\d+(?:\\.\\d+)?))*", str)) return null;
+                                  // so that comma could also be the first char of a number
+        if(!Pattern.matches("((\\d+(?:\\.\\d+)?)|(?:\\.\\d+))(?:(\\+|\\-|\\*|\\/)((\\d+(?:\\.\\d+)?)|(?:\\.\\d+)))*", str)) return null;
 
         lst = new LinkedList<>();
-        Pattern p = Pattern.compile("(\\d+(?:\\.\\d+)?).*");
+        Pattern p = Pattern.compile("((\\d+(?:\\.\\d+)?)|(?:\\.\\d+)).*");
         m = p.matcher(str);
         if(m.matches()) lst.add(m.group(1)); //add the first number to the list
 
         //match rest and add it to the list
-        p = Pattern.compile("(\\+|\\-|\\*|\\/)(\\d+(?:\\.\\d+)?)");
+        p = Pattern.compile("(\\+|\\-|\\*|\\/)((\\d+(?:\\.\\d+)?)|(?:\\.\\d+))");
         m = p.matcher(str.substring(lst.get(0).length()));
         while(m.find()){
             lst.add(m.group(1));
@@ -97,7 +97,6 @@ class Parser {
         node.insertRight(parseSubExpr(middle+1, right));
         return node;
     }
-
 
 
 
